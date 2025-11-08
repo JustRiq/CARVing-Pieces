@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARVing Pieces</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+
+</head>
+<body>
+
+    <div id="intro-modal-overlay">
+        <div id="intro-modal-content">
+            <h2>Welcome to CARVing Pieces!</h2>
+            <p>"Be a hero... while going crazy over a puzzle. 'CARVing Pieces' is a 'Puzzle-for-Charity' dApp on CARV SVM. You pay 0.001 SOL to play, and every cent goes to charity. Go on, solve it for a good cause!"</p>
+            <button id="intro-ok-button">OK</button>
+        </div>
+    </div>
+    <div class="game-container" style="display: none;">
+        
+        <div class="left-panel">
+            <div id="app-logo">
+                <img src="logo.png" alt="CARVing Pieces Logo">
+            </div>
+            
+            <button class="nav-button" id="btn-close"><i class="fas fa-chevron-left"></i> Close</button>
+            <button class="nav-button" id="btn-main-menu"><i class="fas fa-home"></i> Main Menu</button>
+            <button class="nav-button" id="btn-my-puzzles"><i class="fas fa-puzzle-piece"></i> My Puzzles</button>
+            <button class="nav-button" id="btn-puzzle-store"><i class="fas fa-store"></i> Puzzle Store</button>
+            <button class="nav-button" id="btn-achievements"><i class="fas fa-trophy"></i> Achievements</button>
+            <button class="nav-button" id="btn-settings"><i class="fas fa-cog"></i> Settings</button>
+        </div>
+
+        <div class="center-area">
+            <h2 class="game-title">CARVing Pieces</h2>
+            <p id="timer">Time: 00:00</p>
+
+            <div id="how-to-play">
+                <h3>How to Play</h3>
+                <ol>
+                    <li><strong>Connect Wallet:</strong> Connect your Backpack wallet.</li>
+                    <li><strong>Check Network:</strong> Ensure your wallet is set to the <strong>CARV SVM Testnet</strong> and has at least 0.0011 Test SOL.</li>
+                    <li><strong>Pay & Upload:</strong> Choose your image. You will be asked to approve a 0.001 SOL donation to play.</li>
+                    <li><strong>Solve & Share:</strong> Solve the puzzle as fast as you can and share your score!</li>
+                </ol>
+            </div>
+            <div class="image-upload-section" id="upload-section">
+                <label for="imageUpload" class="upload-button"><i class="fas fa-upload"></i> Choose your image</label>
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="puzzle-area" id="puzzle-area">
+                <div id="board-container">
+                    </div>
+                <div id="piece-container">
+                    </div>
+            </div>
+
+            <button class="settings-button-top"><i class="fas fa-cog"></i></button>
+        </div>
+
+        <div class="right-panel">
+            <h3>Original Image</h3>
+            <div id="original-image-preview">
+                </div>
+
+            <div id="leaderboard-panel">
+                <h4>Leaderboard</h4>
+                <div class="leaderboard-entry">
+                    <span>1. 5sKq...j9f</span>
+                    <span>00:12</span>
+                </div>
+                <div class="leaderboard-entry">
+                    <span>2. Bx2S...e4c</span>
+                    <span>00:15</span>
+                </div>
+                <div class="leaderboard-entry">
+                    <span>3. (Loading...)</span>
+                    <span>...</span>
+                </div>
+            </div>
+            <p id="testnet-warning">
+                <strong>Testnet Only:</strong><br>
+                Please use a Backpack wallet connected to the <strong>CARV SVM RPC</strong> and funded with <strong>Test SOL</strong>.
+            </p>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider round"></div>
+                </label>
+                <em>Night Mode</em> </div>
+            <button id="connect-wallet-button" class="upload-button">
+                <i class="fas fa-wallet"></i> Connect Wallet
+            </button>
+            
+            <button id="disconnect-wallet-button" class="upload-button">
+                <i class="fas fa-sign-out-alt"></i> Disconnect
+            </button>
+            
+            <p id="wallet-address" style="font-size: 11px; word-break: break-all; text-align: center;"></p>
+            
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <div id="modal-overlay">
+        <div id="modal-content">
+            <h2>Congratulations!</h2>
+            <p>You completed the puzzle!</p>
+            <p id="modal-final-time"></p>
+            
+            <div class="modal-buttons">
+                <button id="try-again-button">Try Again</button>
+                <button id="share-twitter-button">
+                    <i class="fab fa-twitter"></i> Share with @CashieCARV
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
