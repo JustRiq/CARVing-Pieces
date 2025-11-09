@@ -335,7 +335,7 @@ async function handleImageUpload(event) { // <-- Function is now ASYNC
     } catch (err) {
         console.error("Payment failed:", err);
         event.target.value = null; // Reset file input
-        alert("Payment failed. The puzzle will not be loaded. Please try again.");
+        alert("Payment failed.\n\nPlease try refreshing the page or reconnecting your wallet.");
     }
     // --- END OF NEW PAYMENT LOGIC ---
 }

@@ -148,7 +148,7 @@ body {
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-/* --- HOW TO PLAY STYLES --- */
+/* --- NEW: HOW TO PLAY STYLES --- */
 #how-to-play {
     width: 90%;
     max-width: 450px;
@@ -409,10 +409,18 @@ body {
 .theme-switch-wrapper {
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; <-- REMOVED */
     margin-bottom: 15px;
     gap: 10px;
 }
+
+/* === NEW: POSITIONING FOR LEFT PANEL === */
+.left-panel .theme-switch-wrapper {
+    justify-content: flex-start; /* Align to left */
+    padding-left: 10px; /* Match button padding */
+    margin-top: 15px; /* Add space from buttons */
+}
+/* === END NEW STYLES === */
 
 .theme-switch {
     position: relative;
