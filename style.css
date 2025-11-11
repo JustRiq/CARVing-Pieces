@@ -148,7 +148,7 @@ body {
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-/* --- NEW: HOW TO PLAY STYLES --- */
+/* --- HOW TO PLAY STYLES --- */
 #how-to-play {
     width: 90%;
     max-width: 450px;
@@ -360,6 +360,7 @@ body {
     overflow-y: auto; 
     flex-shrink: 0;
     transition: background-color 0.3s ease, border-color 0.3s ease;
+    margin-top: 15px; /* Add space from goal panel */
 }
 
 #leaderboard-panel h4 {
@@ -381,6 +382,93 @@ body {
 }
 /* --- END OF LEADERBOARD STYLES --- */
 
+/* --- CHARITY INFO STYLES --- */
+#charity-info {
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.4;
+    background-color: rgba(42, 157, 143, 0.15); /* Cyan background */
+    border: 1px dashed #2A9D8F; /* Cyan border */
+    border-radius: 5px;
+    padding: 8px;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: -5px; /* Pull it up closer */
+    margin-bottom: 15px;
+    color: #e0e0f0;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+#charity-info strong {
+    color: #fff;
+    font-weight: bold;
+}
+
+#charity-info a {
+    color: #34e0c9; /* Bright Cyan Link */
+    text-decoration: underline;
+    word-break: break-all; /* Ensure long links don't break layout */
+    font-weight: 600;
+}
+
+#charity-info a:hover {
+    color: #fff;
+}
+/* --- END OF CHARITY INFO STYLES --- */
+
+/* --- TX HISTORY STYLES --- */
+.left-panel #tx-history-panel {
+    width: calc(100% - 20px); /* Fill left panel width, minus padding */
+    height: 120px; /* Set a height */
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 3px solid #5d359e;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow-y: auto; 
+    flex-shrink: 0;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    margin-top: 10px; /* Space from buttons above */
+}
+
+#tx-history-panel h4 {
+    margin: 0 0 10px 0;
+    text-align: center;
+    color: #e0e0f0;
+    border-bottom: 1px solid #5d359e;
+    padding-bottom: 5px;
+    font-weight: 600;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.tx-history-entry {
+    font-size: 0.85em;
+    padding: 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tx-history-entry a {
+    color: #2A9D8F; /* Cyan link */
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.tx-history-entry a:hover {
+    color: #34e0c9;
+}
+
+/* Hide from right panel */
+.right-panel #tx-history-panel {
+    display: none;
+}
+.right-panel #charity-goal-panel {
+    display: none;
+}
+/* --- END OF TX HISTORY STYLES --- */
+
+
 /* --- STYLE FOR TESTNET WARNING --- */
 #testnet-warning {
     font-size: 11px;
@@ -393,7 +481,7 @@ body {
     padding: 8px;
     box-sizing: border-box;
     width: 100%;
-    margin-top: 5px;
+    /* margin-top: 5px; (No longer needed) */
     margin-bottom: 15px;
     color: #e0e0f0; /* Lighter warning text */
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
@@ -406,21 +494,24 @@ body {
 }
 
 /* --- THEME SWITCH STYLES --- */
-.theme-switch-wrapper {
+.left-panel .theme-switch-wrapper {
     display: flex;
     align-items: center;
-    /* justify-content: center; <-- REMOVED */
-    margin-bottom: 15px;
+    justify-content: center;
+    margin-top: auto; /* Push to bottom of left panel */
+    margin-bottom: 10px; /* Small space from bottom */
     gap: 10px;
+    width: calc(100% - 20px); /* Fill left panel width, minus padding */
+    padding-top: 10px; /* Space from content above */
+    border-top: 1px dashed #3f355c; /* Separator line */
+    transition: border-color 0.3s ease;
 }
 
-/* === NEW: POSITIONING FOR LEFT PANEL === */
-.left-panel .theme-switch-wrapper {
-    justify-content: flex-start; /* Align to left */
-    padding-left: 10px; /* Match button padding */
-    margin-top: 15px; /* Add space from buttons */
+/* Hide from right panel */
+.right-panel .theme-switch-wrapper {
+    display: none;
 }
-/* === END NEW STYLES === */
+/* --- END MODIFICATION --- */
 
 .theme-switch {
     position: relative;
@@ -795,6 +886,40 @@ body.day-mode #leaderboard-panel h4 {
 body.day-mode .leaderboard-entry {
     border-color: #dee2e6;
 }
+
+body.day-mode #charity-info {
+    background-color: rgba(40, 167, 69, 0.1);
+    border-color: rgba(40, 167, 69, 0.4);
+    color: #555;
+}
+body.day-mode #charity-info strong {
+    color: #28a745;
+}
+body.day-mode #charity-info a {
+    color: #007bff;
+}
+body.day-mode #charity-info a:hover {
+    color: #0056b3;
+}
+
+
+body.day-mode #tx-history-panel {
+    background-color: rgba(233, 236, 239, 0.7);
+    border-color: #007bff;
+}
+
+body.day-mode #tx-history-panel h4 {
+    color: #333;
+    border-color: #dee2e6;
+}
+
+body.day-mode .tx-history-entry a {
+    color: #007bff;
+}
+body.day-mode .tx-history-entry a:hover {
+    color: #0056b3;
+}
+
 
 body.day-mode #testnet-warning {
     background-color: rgba(0, 123, 255, 0.1);

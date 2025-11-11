@@ -34,6 +34,9 @@
             <button class="nav-button" id="btn-achievements"><i class="fas fa-trophy"></i> Achievements</button>
             <button class="nav-button" id="btn-settings"><i class="fas fa-cog"></i> Settings</button>
 
+            <div id="tx-history-panel">
+                <h4>My Tx History</h4>
+                </div>
             <div class="theme-switch-wrapper">
                 <label class="theme-switch" for="checkbox">
                     <input type="checkbox" id="checkbox" />
@@ -90,6 +93,12 @@
                     <span>...</span>
                 </div>
             </div>
+            <div id="charity-info">
+                <strong>Charity Wallet:</strong>
+                <a href="https://explorer.testnet.carv.io/address/EX7C3e3xyymyF42kJ9bEEv1NeZuDGDEFpgHdeTsjkJt8" target="_blank" title="View on Explorer">
+                    EX7C...jkJt8
+                </a>
+            </div>
             <p id="testnet-warning">
                 <strong>Testnet Only:</strong><br>
                 Please use a Backpack wallet connected to the <strong>CARV SVM RPC</strong> and funded with <strong>Test SOL</strong>.
@@ -102,6 +111,13 @@
                 <i class="fas fa-sign-out-alt"></i> Disconnect
             </button>
             
+            <div id="charity-goal-panel">
+                <h4>Charity Goal: 2 SOL</h4>
+                <div class="progress-bar-container">
+                    <div id="charity-progress-bar"></div>
+                </div>
+                <span id="charity-progress-text">0%</span>
+            </div>
             <p id="wallet-address" style="font-size: 11px; word-break: break-all; text-align: center;"></p>
             
         </div>

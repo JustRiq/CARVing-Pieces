@@ -15,6 +15,8 @@ const MIN_BALANCE_SOL = PAYMENT_AMOUNT_SOL + MIN_TX_FEE_SOL; // Minimum balance 
 // All payments will be sent to this address.
 const TREASURY_ADDRESS = new PublicKey("EX7C3e3xyymyF42kJ9bEEv1NeZuDGDEFpgHdeTsjkJt8");
 
+// === NEW: CHARITY GOAL ===
+const CHARITY_GOAL_SOL = 2; // The goal is 2 SOL
 
 // === CREATE A GLOBAL CONNECTION OBJECT ===
 const connection = new Connection(RPC_ENDPOINT, 'confirmed');
@@ -176,6 +178,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         document.getElementById("upload-section").style.display = "block";
                         document.getElementById("puzzle-area").style.display = "flex";
                         howToPlayGuide.style.display = "none"; // <-- HIDE "HOW TO PLAY"
+                        
+                        loadTransactionHistory(); // <-- LOAD TX HISTORY
+                        updateCharityProgress(); // <-- LOAD PROGRESS BAR
                     } else {
                         // --- BALANCE TOO LOW! KEEP GAME LOCKED. ---
                         walletAddressEl.innerText = `Connected: ${userPublicKey.toString()}`;
@@ -250,6 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 document.getElementById("board-container").innerHTML = "";
                 document.getElementById("original-image-preview").innerHTML = "";
+                document.getElementById("tx-history-panel").innerHTML = "<h4>My Tx History</h4>"; // <-- CLEAR TX HISTORY
                 
                 console.log("Wallet disconnected.");
             }
@@ -276,6 +282,8 @@ document.addEventListener("DOMContentLoaded", () => {
         window.open(twitterUrl, '_blank');
     });
 
+    // === NEW: Load charity progress on page load ===
+    updateCharityProgress();
 });
 
 /**
@@ -322,6 +330,12 @@ async function handleImageUpload(event) { // <-- Function is now ASYNC
 
         console.log("Payment successful! Signature:", signature);
         
+        // === NEW: SAVE TX TO HISTORY & UPDATE PROGRESS BAR ===
+        saveTransactionToHistory(signature);
+        loadTransactionHistory(); // Reload history panel
+        updateCharityProgress(); // <-- REFRESH PROGRESS BAR
+        // === END OF NEW CODE ===
+        
         // --- PAYMENT SUCCESSFUL - PROCEED WITH PUZZLE ---
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -335,7 +349,7 @@ async function handleImageUpload(event) { // <-- Function is now ASYNC
     } catch (err) {
         console.error("Payment failed:", err);
         event.target.value = null; // Reset file input
-        alert("Payment failed.\n\nPlease try refreshing the page or reconnecting your wallet.");
+        alert("Payment failed. The puzzle will not be loaded.\n\nPlease try refreshing the page or reconnecting your wallet.");
     }
     // --- END OF NEW PAYMENT LOGIC ---
 }
@@ -480,5 +494,80 @@ function checkWin() {
         
         // This is where you would put the leaderboard logic if you had it
         // e.g., submitScoreToLeaderboard(finalTime, connectedPublicKey);
+    }
+}
+
+// === TX HISTORY FUNCTIONS ===
+
+/**
+ * Loads transaction history from localStorage and displays it.
+ */
+function loadTransactionHistory() {
+    const historyPanel = document.getElementById("tx-history-panel");
+    if (!historyPanel) return;
+
+    historyPanel.innerHTML = "<h4>My Tx History</h4>"; // Clear old entries but keep title
+    
+    const history = JSON.parse(localStorage.getItem("txHistory")) || [];
+    
+    if (history.length === 0) {
+        historyPanel.innerHTML += `<div class="tx-history-entry">No transactions yet.</div>`;
+        return;
+    }
+
+    // Display in reverse order (newest first)
+    history.reverse().forEach(signature => {
+        const entryDiv = document.createElement("div");
+        entryDiv.className = "tx-history-entry";
+        
+        const shortSig = signature.substring(0, 10) + "...";
+        const explorerUrl = `https://explorer.testnet.carv.io/tx/${signature}`; // <-- UPDATED URL
+
+        entryDiv.innerHTML = `<a href="${explorerUrl}" target="_blank">${shortSig}</a>`;
+        historyPanel.appendChild(entryDiv);
+    });
+}
+
+/**
+ * Saves a new transaction signature to localStorage.
+ * @param {string} signature - The transaction signature string.
+ */
+function saveTransactionToHistory(signature) {
+    let history = JSON.parse(localStorage.getItem("txHistory")) || [];
+    history.push(signature);
+    
+    // Optional: Keep only the last 5 transactions
+    if (history.length > 5) {
+        history = history.slice(history.length - 5);
+    }
+    
+    localStorage.setItem("txHistory", JSON.stringify(history));
+}
+
+// === CHARITY PROGRESS BAR FUNCTION ===
+async function updateCharityProgress() {
+    const progressBar = document.getElementById("charity-progress-bar");
+    const progressText = document.getElementById("charity-progress-text");
+
+    if (!progressBar || !progressText) return;
+
+    try {
+        // Fetch the balance of the charity wallet
+        const balance = await connection.getBalance(TREASURY_ADDRESS);
+        const balanceInSol = balance / LAMPORTS_PER_SOL;
+
+        // Calculate percentage
+        let percent = (balanceInSol / CHARITY_GOAL_SOL) * 100;
+        if (percent > 100) percent = 100; // Cap at 100%
+
+        // Update the UI
+        progressBar.style.width = `${percent}%`;
+        progressText.innerText = `${percent.toFixed(1)}% (${balanceInSol.toFixed(4)} / ${CHARITY_GOAL_SOL} SOL)`;
+        
+        console.log(`Charity goal progress: ${percent.toFixed(1)}%`);
+
+    } catch (err) {
+        console.error("Failed to fetch charity wallet balance:", err);
+        progressText.innerText = "Error loading progress";
     }
 }
